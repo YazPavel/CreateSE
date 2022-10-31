@@ -1,5 +1,6 @@
 #include "converter.hpp"
-#include "voro/voro++.hh"
+#include <string>
+#include <sstream>
 
 using namespace std;
 using namespace voro;
@@ -263,15 +264,17 @@ void Converter::gen_file(vector<double>& centerx, vector<double>& centery, vecto
 		exit(1); // call system to stop
 	}
 	double value;
-	int counter = 0;
-	while (inFile >> value) {
-		switch (counter % 3) {
-		case 0: centerx.push_back(value);
-		case 1: centery.push_back(value);
-		case 2: centerz.push_back(value);
-		default: break;
-		}
-		counter++;
+	string line;
+	while (std::getline(inFile, line)) {
+		std::stringstream ss;
+		ss.str(line);
+		ss >> value;
+		centerx.push_back(value);
+		ss >> value;
+		centery.push_back(value);
+		ss >> value;
+		centerz.push_back(value);
+	
 	}
 
 	inFile.close();
